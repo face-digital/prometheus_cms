@@ -1,0 +1,14 @@
+django
+django-ckeditor
+django-image-cropping
+django-modeltranslation
+django-mptt
+django-solo
+easy-thumbnails
+flake8
+Jinja2
+Markdown
+pep8
+Pillow
+pytz
+six
