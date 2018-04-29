@@ -1,2 +1,2 @@
-# prometheus_cms
-Prometheus CMS
+# prometheus_framework
+Prometheus Framework
