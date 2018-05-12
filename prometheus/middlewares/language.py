@@ -24,7 +24,7 @@ class LanguageMiddleware(MiddlewareMixin):
 
         available_langs = settings.LANGUAGE_CODES_PUBLIC
         if lang not in available_langs:
-            raise Http404(_('Язык "%s" не зарегистрирован в системе') % lang)
+            raise Http404(_('Language "%s" is not registered in the project') % lang)
 
         translation.activate(lang)
         request.LANGUAGE_CODE = lang

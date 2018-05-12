@@ -85,7 +85,7 @@ class LastModMixin(models.Model):
 
 class StatusOrderingMixin(models.Model):
     """Abstract model for all objects"""
-    ordering = models.IntegerField(_('Порядок'), default=0, db_index=True)
+    ordering = models.IntegerField(_('Ordering'), default=0, db_index=True)
     status = models.SmallIntegerField(
         _('Status'),
         default=StatusEnum.PUBLIC,
