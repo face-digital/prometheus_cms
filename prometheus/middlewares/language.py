@@ -2,10 +2,11 @@
 from django.conf import settings
 from django.http.response import Http404
 from django.utils import translation
+from django.utils.deprecation import MiddlewareMixin
 from django.utils.translation import ugettext_lazy as _
 
 
-class LanguageMiddleware(object):
+class LanguageMiddleware(MiddlewareMixin):
     """Language middleware"""
     @staticmethod
     def process_request(request):
