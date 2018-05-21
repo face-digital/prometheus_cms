@@ -38,7 +38,7 @@ class BasicModel(models.Model):
         fields = []
         has_status = False
         has_ordering = False
-        # has_last_mod = False
+        has_last_mod = False
 
         for field in self._meta.fields:
             if field.attname == 'status':
@@ -46,6 +46,10 @@ class BasicModel(models.Model):
 
             if field.attname == 'ordering':
                 has_ordering = True
+
+            if field.attname in LASTMOD_FIELDS:
+                has_last_mod = True
+                continue
 
             if field.attname in UTIL_FIELDS:
                 continue
@@ -64,6 +68,9 @@ class BasicModel(models.Model):
 
         if has_ordering:
             fields.append('ordering')
+
+        if has_last_mod:
+            fields.extend(LASTMOD_FIELDS)
 
         return fields
 

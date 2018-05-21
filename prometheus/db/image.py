@@ -16,7 +16,7 @@ class ImageMixin(models.Model):
     def image_thumb(self):
         image = getattr(self, self.image_field)
         if image and not isinstance(image, ImageFieldFile):
-            return '<img src="%s" alt="" style="max-width:%spx;max-height:%spx;">' % (
+            return '<img src="%s" alt="" style="max-width:%spx;height:%spx;">' % (
                 image.url, self.image_size[0], self.image_size[1]
             )
         else:
