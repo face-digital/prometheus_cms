@@ -5,7 +5,6 @@ from django.core.mail import EmailMessage
 from django.core.mail import EmailMultiAlternatives
 from django.db import models
 from django.template.loader import render_to_string
-from django.urls import reverse
 
 from markupsafe import escape
 
@@ -62,7 +61,6 @@ def send_trigger_email(event, template_vars, obj=None, fields=None, emails=None,
 
     subject = 'На сайте %s %s' % (settings.SITE_NAME, event)
 
-    admin_url = None
     if obj:
         meta = obj._meta
         model = meta.model
@@ -96,10 +94,7 @@ def send_trigger_email(event, template_vars, obj=None, fields=None, emails=None,
                         fields[f.verbose_name] = value
                         break
 
-        admin_url = reverse('admin:%s_%s_change', (app, model_name), args=(obj.pk,))
-
     params = {
-        'admin_url': admin_url,
         'extra_data': extra_data,
         'fields': fields,
         'site_url': settings.SITE_URL,
