@@ -9,28 +9,26 @@ from django.urls import reverse
 
 from markupsafe import escape
 
-from prometheus.apps.general.db_config import db_vars
 
-
-def get_admin_emails(force_system=False, language=settings.DEFAULT_LANGUAGE):
+def get_admin_emails(template_vars, force_system=False, language=settings.DEFAULT_LANGUAGE):
     if force_system:
         return [x[1] for x in settings.ADMINS]
 
-    admins = db_vars.get('ADMINS', language, '')
+    admins = template_vars.get('ADMINS', language, '')
     return admins.split(',') if admins else [x[1] for x in settings.ADMINS]
 
 
-def get_default_from_email(force_system=False):
+def get_default_from_email(template_vars, force_system=False):
     if force_system:
         return settings.DEFAULT_FROM_EMAIL
 
-    email = db_vars.get('DEFAULT_FROM_EMAIL', None)
+    email = template_vars.get('DEFAULT_FROM_EMAIL', None)
     return email if email else settings.DEFAULT_FROM_EMAIL
 
 
-def send_email(template, emails, subject, params=None, extra_headers=None, from_email=None):
+def send_email(template_vars, template, emails, subject, params=None, extra_headers=None, from_email=None):
     if from_email is None:
-        from_email = get_default_from_email()
+        from_email = get_default_from_email(template_vars)
 
     message_html = render_to_string(
         'emails/%s/%s.html' % (template, template), params, using='jinja2'
@@ -45,13 +43,13 @@ def send_email(template, emails, subject, params=None, extra_headers=None, from_
     msg.send()
 
 
-def send_trigger_email(event, obj=None, fields=None, emails=None, from_email=None,
+def send_trigger_email(event, template_vars, obj=None, fields=None, emails=None, from_email=None,
                        extra_data=None, extra_headers=None, language=settings.DEFAULT_LANGUAGE):
     if emails is None:
-        emails = get_admin_emails(language=language)
+        emails = get_admin_emails(template_vars, language=language)
 
     if from_email is None:
-        from_email = get_default_from_email()
+        from_email = get_default_from_email(template_vars)
 
     if event is None:
         if obj:
