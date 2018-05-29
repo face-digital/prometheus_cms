@@ -156,7 +156,7 @@ class ArchivableMixin(models.Model):
         abstract = True
 
 
-class DictionaryModel(VirtualDeletableMixin, BaseModel):
+class BaseHandbookModel(VirtualDeletableMixin, BaseModel):
     title = models.CharField(_('Title'), max_length=255, unique=True)
 
     translation_fields = ('title',)

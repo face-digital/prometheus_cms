@@ -32,3 +32,11 @@ class VirtualDeleteAdminMixin(object):
     @staticmethod
     def suit_row_attributes(obj, request):
         return {'class': 'is-deleted' if obj.is_deleted else ''}
+
+
+class BaseHandbookModelAdmin(SuperUserDeletableAdminMixin, BaseModelAdmin):
+    """Base handbook model admin"""
+    list_display = ('id', 'title', 'status', 'ordering', 'created')
+    list_display_links = ('id', 'title')
+    readonly_fields = BaseModelAdmin.readonly_fields + ('is_deleted',)
+    search_fields = BaseModelAdmin.search_fields + ['title']
