@@ -23,3 +23,12 @@ class BaseModelAdmin(ModelAdmin):
                 fieldsets[0][1]['fields'].append(field)
 
         return fieldsets
+
+
+class VirtualDeleteAdminMixin(object):
+    readonly_fields = ('is_deleted',)
+    list_filter = ('is_deleted',)
+
+    @staticmethod
+    def suit_row_attributes(obj, request):
+        return {'class': 'is-deleted' if obj.is_deleted else ''}
