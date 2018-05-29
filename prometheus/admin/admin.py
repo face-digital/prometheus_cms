@@ -14,6 +14,7 @@ class BaseModelAdmin(ModelAdmin):
     list_filter = ('status',)
     ordering = ('ordering',)
     readonly_fields = ('created', 'updated')
+    search_fields = ['=id']
 
     def get_fieldsets(self, request, obj=None):
         fieldsets = super(BaseModelAdmin, self).get_fieldsets(request, obj=obj)
