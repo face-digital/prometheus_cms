@@ -62,7 +62,6 @@ class BasicModel(models.Model):
             else:
                 fields.append(field.attname)
 
-        # служебные поля в самый конец
         if has_status:
             fields.append('status')
 
@@ -106,6 +105,52 @@ class StatusOrderingMixin(models.Model):
 class BaseModel(BasicModel, LastModMixin, StatusOrderingMixin):
     """abstract model class for all models having last-mod fields and status with ordering"""
     objects = BaseManager()
+
+    class Meta:
+        abstract = True
+
+
+class DeletableManager(models.Manager):
+    def get_queryset(self):
+        return super(DeletableManager, self).get_queryset().filter(is_deleted=False)
+
+
+class VirtualDeletableMixin(models.Model):
+    """Virtually removing of objects by checking is_deleted flag"""
+    is_deleted = models.BooleanField(_('Deleted'), default=False)
+    objects = Manager()
+    existing_objects = DeletableManager()
+
+    def delete(self, *args, **kwargs):
+        self.is_deleted = True
+        self.save()
+
+    def restore(self):
+        self.is_deleted = False
+        self.save()
+
+    class Meta:
+        abstract = True
+
+
+class ArchivableManager(models.Manager):
+    def get_queryset(self):
+        return super(ArchivableManager, self).get_queryset().filter(is_archived=False)
+
+
+class ArchivableMixin(models.Model):
+    """Archives mixin"""
+    is_archived = models.BooleanField(_('Archived'), default=False)
+    objects = Manager()
+    existing_objects = ArchivableManager()
+
+    def archive(self, *args, **kwargs):
+        self.is_archived = True
+        self.save()
+
+    def unarchive(self):
+        self.is_archived = False
+        self.save()
 
     class Meta:
         abstract = True

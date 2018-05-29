@@ -11,7 +11,7 @@ whitespace_re = re.compile(r'(\s|-|\)|\()+', re.MULTILINE)
 def phone_url(val):
     val = strip_whitescapes(val, phone_re)
 
-    # если не 8 800
+    # if not 8 800
     if not val.startswith('8'):
         if not val.startswith('+'):
             val = '+7' + val

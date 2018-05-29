@@ -5,6 +5,7 @@ from django.core.mail import EmailMessage
 from django.core.mail import EmailMultiAlternatives
 from django.db import models
 from django.template.loader import render_to_string
+from django.utils.translation import ugettext_lazy as _
 
 from markupsafe import escape
 
@@ -38,7 +39,6 @@ def send_email(template_vars, template, emails, subject, params=None, extra_head
 
     msg = EmailMultiAlternatives(subject, message_txt, from_email, emails, headers=extra_headers)
     msg.attach_alternative(message_html, 'text/html')
-
     msg.send()
 
 
@@ -52,20 +52,17 @@ def send_trigger_email(event, template_vars, obj=None, fields=None, emails=None,
 
     if event is None:
         if obj:
-            event = 'новый объект %s' % obj._meta.verbose_name
+            event = _('new object {obj}').format(obj=obj._meta.verbose_name)
         else:
-            event = 'новое событие'
+            event = _('new event')
 
     if extra_data is not None:
         assert isinstance(extra_data, dict)
 
-    subject = 'На сайте %s %s' % (settings.SITE_NAME, event)
+    subject = _('{event} on website {site}').format(site=settings.SITE_NAME, event=event)
 
     if obj:
         meta = obj._meta
-        model = meta.model
-        app = model.__module__.split('.')[0]
-        model_name = meta.object_name.lower()
 
         if fields is None:
             fields = {'ID': obj.pk}

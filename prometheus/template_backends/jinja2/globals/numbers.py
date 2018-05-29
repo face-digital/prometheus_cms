@@ -8,7 +8,7 @@ from prometheus.template_backends.jinja2 import jinjafilter, jinjaglobal
 
 @jinjafilter
 def floatformat(value, digits):
-    """Порт floatformat"""
+    """floatformat port"""
     return float_format(value, digits)
 
 
