@@ -154,3 +154,17 @@ class ArchivableMixin(models.Model):
 
     class Meta:
         abstract = True
+
+
+class DictionaryModel(VirtualDeletableMixin, BaseModel):
+    title = models.CharField(_('Title'), max_length=255, unique=True)
+
+    translation_fields = ('title',)
+
+    objects = BaseManager()
+
+    class Meta:
+        abstract = True
+
+    def __str__(self):
+        return self.title
